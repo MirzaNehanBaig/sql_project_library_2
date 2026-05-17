@@ -409,6 +409,24 @@ GROUP BY 1, 2
 **Task 18: Identify Members Issuing High-Risk Books**  
 Write a query to identify members who have issued books more than twice with the status "damaged" in the books table. Display the member name, book title, and the number of times they've issued damaged books.    
 
+SELECT
+	m.member_name,
+	bk.book_title,
+COUNT(*) as no_of_times_issued_damaged_books
+FROM
+	members as m
+JOIN
+	issued_status as ist
+ON ist.issued_member_id = m.member_id
+JOIN
+	books as bk
+ON 
+	bk.isbn = ist.issued_book_isbn
+GROUP BY 1,2
+	HAVING COUNT(*) > 2
+AND
+	bk.status = 'damaged'
+
 
 **Task 19: Stored Procedure**
 Objective:
@@ -487,7 +505,23 @@ Description: Write a CTAS query to create a new table that lists each member and
     Number of overdue books
     Total fines
 
-
+SELECT 
+    m.member_id,
+    COUNT(r.return_id IS NULL),
+    (DATEDIFF(CURRENT_DATE, i.issued_date) - 30) AS overdue_by_days,
+    (DATEDIFF(CURRENT_DATE, i.issued_date) - 30) * 0.50 AS fine
+FROM
+    members m
+        JOIN
+    issued_status i ON m.member_id = i.issued_member_id
+        JOIN
+    books b ON i.issued_book_isbn = b.isbn
+        LEFT JOIN
+    return_status r ON i.issued_id = r.issued_id
+WHERE
+    r.return_id IS NULL
+        AND (DATEDIFF(CURRENT_DATE, i.issued_date) - 30) > 0
+GROUP BY member_id
 
 ## Reports
 
@@ -510,13 +544,12 @@ This project demonstrates the application of SQL skills in creating and managing
 3. **Run the Queries**: Use the SQL queries in the `analysis_queries.sql` file to perform the analysis.
 4. **Explore and Modify**: Customize the queries as needed to explore different aspects of the data or answer additional questions.
 
-## Author - Zero Analyst
+## Author - Mirza Nehan Baig
 
 This project showcases SQL skills essential for database management and analysis. For more content on SQL and data analysis, connect with me through the following channels:
 
-- **YouTube**: [Subscribe to my channel for tutorials and insights](https://www.youtube.com/@zero_analyst)
-- **Instagram**: [Follow me for daily tips and updates](https://www.instagram.com/zero_analyst/)
-- **LinkedIn**: [Connect with me professionally](https://www.linkedin.com/in/najirr)
-- **Discord**: [Join our community for learning and collaboration](https://discord.gg/36h5f2Z5PK)
+Instagram: https://www.instagram.com/nehan.baig/
+LinkedIn: https://www.linkedin.com/in/mirza-nehan-baig-6a64133ab/
+
 
 Thank you for your interest in this project!
