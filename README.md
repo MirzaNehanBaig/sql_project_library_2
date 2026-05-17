@@ -408,7 +408,7 @@ GROUP BY 1, 2
 
 **Task 18: Identify Members Issuing High-Risk Books**  
 Write a query to identify members who have issued books more than twice with the status "damaged" in the books table. Display the member name, book title, and the number of times they've issued damaged books.    
-'''sql
+```sql
 SELECT
 	m.member_name,
 	bk.book_title,
@@ -426,7 +426,7 @@ GROUP BY 1,2
 	HAVING COUNT(*) > 2
 AND
 	bk.status = 'damaged'
-'''
+```
 
 **Task 19: Stored Procedure**
 Objective:
@@ -502,7 +502,7 @@ Description: Write a CTAS query to create a new table that lists each member and
     Member ID
     Number of overdue books
     Total fines
-'''sql
+```sql
 SELECT 
     m.member_id,
     COUNT(r.return_id IS NULL),
@@ -520,7 +520,7 @@ WHERE
     r.return_id IS NULL
         AND (DATEDIFF(CURRENT_DATE, i.issued_date) - 30) > 0
 GROUP BY member_id
-'''
+```
 ## Reports
 
 - **Database Schema**: Detailed table structures and relationships.
